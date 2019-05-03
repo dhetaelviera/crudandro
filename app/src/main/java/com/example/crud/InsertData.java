@@ -76,7 +76,7 @@ public class InsertData extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+                        startActivity(new Intent(InsertData.this, MainActivity.class));
                     }
                 },
                 new Response.ErrorListener() {
