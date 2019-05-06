@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.crud.InsertData;
 import com.example.crud.Model.ModelData;
 import com.example.crud.R;
+import com.example.crud.UpdateDelete;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -61,8 +62,8 @@ public AdapterData(Context context, List<ModelData> items){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent update=new Intent(context, InsertData.class);
-              update.putExtra("update", 1);
+                Intent update=new Intent(context, UpdateDelete.class);
+                update.putExtra("update",0);
                 update.putExtra("username", md.getUsername());
                 update.putExtra("nama", md.getNama());
                 update.putExtra("email", md.getEmail());

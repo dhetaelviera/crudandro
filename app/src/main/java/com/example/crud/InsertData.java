@@ -39,7 +39,7 @@ public class InsertData extends AppCompatActivity {
         //get data
 
         Intent data= getIntent();
-        final int update= data.getIntExtra("update",0);
+       final int update= data.getIntExtra("update",0);
         String iusername=data.getStringExtra("username");
         String inama=data.getStringExtra("nama");
         String iemail=data.getStringExtra("email");

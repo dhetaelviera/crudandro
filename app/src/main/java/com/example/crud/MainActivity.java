@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         progressDialog=new ProgressDialog(MainActivity.this);
 
         mRecyclerview=(RecyclerView) findViewById(R.id.recyclerviewTemp);
-        btndelete=(Button) findViewById(R.id.btn_delete);
         btninsert=(Button) findViewById(R.id.btn_insert);
         mItems=new ArrayList<>();
 
@@ -62,14 +61,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this, InsertData.class);
                 startActivity(intent);
-            }
-        });
-
-        btndelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent hapus=new Intent(MainActivity.this,Delete.class);
-                startActivity(hapus);
             }
         });
 
