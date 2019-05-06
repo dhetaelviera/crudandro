@@ -65,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btndelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent hapus=new Intent(MainActivity.this,Delete.class);
+                startActivity(hapus);
+            }
+        });
+
     }
 
     private void loadJson(){

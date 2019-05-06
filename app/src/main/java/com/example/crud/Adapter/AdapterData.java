@@ -2,9 +2,11 @@ package com.example.crud.Adapter;
 
 import android.content.Context;
 
+import com.example.crud.InsertData;
 import com.example.crud.Model.ModelData;
 import com.example.crud.R;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,8 @@ public AdapterData(Context context, List<ModelData> items){
     ModelData md=mItems.get(i);
     holder.tvnama.setText(md.getNama());
     holder.tvusername.setText(md.getUsername());
+
+    holder.md=md;
     }
 
     @Override
@@ -45,11 +49,29 @@ public AdapterData(Context context, List<ModelData> items){
     class HolderData extends RecyclerView.ViewHolder{
 
     TextView tvusername, tvnama;
+    ModelData md;
+
+    //nyimpen data
     public HolderData( View view) {
         super(view);
 
         tvnama=(TextView) view.findViewById(R.id.name);
         tvusername=(TextView) view.findViewById(R.id.username);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent update=new Intent(context, InsertData.class);
+              update.putExtra("update", 1);
+                update.putExtra("username", md.getUsername());
+                update.putExtra("nama", md.getNama());
+                update.putExtra("email", md.getEmail());
+                update.putExtra("password", md.getPassword());
+
+                context.startActivity(update);
+            }
+        });
+
     }
 }
 }

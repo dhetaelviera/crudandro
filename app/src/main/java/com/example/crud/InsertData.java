@@ -1,5 +1,6 @@
 package com.example.crud;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,17 @@ public class InsertData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_data);
 
+        //get data
+
+        Intent data= getIntent();
+        final int update= data.getIntExtra("update",0);
+        String iusername=data.getStringExtra("username");
+        String inama=data.getStringExtra("nama");
+        String iemail=data.getStringExtra("email");
+        String ipassword=data.getStringExtra("password");
+
+        //end of get data
+
         username=(EditText) findViewById(R.id.imp_username);
         email=(EditText) findViewById(R.id.imp_email);
         nama=(EditText) findViewById(R.id.imp_nama);
@@ -43,21 +55,79 @@ public class InsertData extends AppCompatActivity {
         btnsave=(Button) findViewById(R.id.btn_save);
         progressDialog=new ProgressDialog(InsertData.this);
 
+        //kondisi update atau insert
+        System.out.println("kondisi update = " + update);
+        if (update==1){
+            btnsave.setText("Update data");
+           // btncancel.setText("Hapus data");
+            username.setText(iusername);
+            username.setVisibility(View.GONE);
+            nama.setText(inama);
+            email.setText(iemail);
+            password.setText(ipassword);
+        }
+
+
         btnsave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (update==1){
+                    updateData();
+                } else{
                 simpanData();
+              }
             }
         });
 
         btncancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent batal=new Intent(InsertData.this,MainActivity.class);
                 startActivity(batal);
             }
         });
 
+    }
+
+    private void updateData(){
+        progressDialog.setMessage("Memperbarui data...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        StringRequest updateReq=new StringRequest(Request.Method.POST, ServerAPI.URL_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.cancel();
+                        try {
+                            System.out.println("ini responsenya: "+response);
+                            JSONObject res=new JSONObject(response);
+                            Toast.makeText(InsertData.this,"pesan :" +  res.getString("message"),Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(new Intent(InsertData.this, MainActivity.class));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.cancel();
+                Toast.makeText(InsertData.this,"pesan : Gagal update",Toast.LENGTH_SHORT).show();
+            }
+        }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username.getText().toString());
+                params.put("email", email.getText().toString());
+                params.put("nama", nama.getText().toString());
+                params.put("password", password.getText().toString());
+                return params;
+            }
+        };
+        AppControler.getInstance().addToRequestQueue(updateReq);
     }
 
     private void simpanData(){
